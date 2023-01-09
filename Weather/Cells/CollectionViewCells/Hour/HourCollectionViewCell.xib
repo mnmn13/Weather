@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_0" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="HourCollectionViewCell" customModule="Weather" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="297" height="378"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="297" height="378"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8TW-Wh-qYy">
+                        <rect key="frame" x="116.66666666666669" y="157" width="64" height="64"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="64" id="4gk-CJ-WlN"/>
+                            <constraint firstAttribute="height" constant="64" id="uVD-g2-EVY"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20°" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jly-LJ-A4L">
+                        <rect key="frame" x="18" y="344" width="261" height="24"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Now" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wtY-8z-LbW">
+                        <rect key="frame" x="18" y="10" width="261" height="24"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="jly-LJ-A4L" firstAttribute="top" relation="greaterThanOrEqual" secondItem="8TW-Wh-qYy" secondAttribute="bottom" constant="8" symbolic="YES" id="6B9-ka-YV7"/>
+                <constraint firstAttribute="trailing" secondItem="jly-LJ-A4L" secondAttribute="trailing" constant="18" id="GIp-eT-Ph7"/>
+                <constraint firstItem="8TW-Wh-qYy" firstAttribute="top" relation="greaterThanOrEqual" secondItem="wtY-8z-LbW" secondAttribute="bottom" constant="8" symbolic="YES" id="LSc-cg-K2F"/>
+                <constraint firstAttribute="trailing" secondItem="wtY-8z-LbW" secondAttribute="trailing" constant="18" id="LtU-gy-8NP"/>
+                <constraint firstItem="8TW-Wh-qYy" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="VGj-qW-aHT"/>
+                <constraint firstItem="wtY-8z-LbW" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="WRE-2c-6kc"/>
+                <constraint firstItem="jly-LJ-A4L" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="18" id="b7z-Tl-2PO"/>
+                <constraint firstItem="wtY-8z-LbW" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="18" id="gll-Rm-k5a"/>
+                <constraint firstItem="8TW-Wh-qYy" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gTV-IL-0wX" secondAttribute="leading" id="iZY-m9-FDn"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="8TW-Wh-qYy" secondAttribute="trailing" id="kv9-FO-DD8"/>
+                <constraint firstAttribute="bottom" secondItem="jly-LJ-A4L" secondAttribute="bottom" constant="10" id="od3-Eu-0do"/>
+                <constraint firstItem="8TW-Wh-qYy" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="pmE-xe-88T"/>
+            </constraints>
+            <size key="customSize" width="297" height="378"/>
+            <connections>
+                <outlet property="hourDegreeLabel" destination="jly-LJ-A4L" id="8ck-vH-Ne0"/>
+                <outlet property="hourLabel" destination="wtY-8z-LbW" id="dOd-GW-Z9l"/>
+                <outlet property="imageView" destination="8TW-Wh-qYy" id="6h5-73-oY9"/>
+            </connections>
+            <point key="canvasLocation" x="46.92307692307692" y="24.881516587677723"/>
+        </collectionViewCell>
+    </objects>
+</document>
