@@ -14,18 +14,18 @@ struct HourForecast: Codable {
     var time: String?
     let tempC: Double?
     let tempF: Double?
-    let isDay: Int?
+    let isDay: Double?
     let condition: Condition?
     let windMph: Double?
     let windKph: Double?
     let windDegree: Int?
     let windDir: String? /* WindDir? */
-    let pressureMB: Int?
+    let pressureMB: Double?
     let pressureIn: Double?
     let precipMm: Double?
     let precipIn: Double?
-    let humidity: Int?
-    let cloud: Int?
+    let humidity: Double?
+    let cloud: Double?
     let feelslikeC: Double?
     let feelslikeF: Double?
     let windchillC: Double?
@@ -38,11 +38,11 @@ struct HourForecast: Codable {
     let chanceOfRain: Int?
     let willItSnow: Int?
     let chanceOfSnow: Int?
-    let visKM: Int?
-    let visMiles: Int?
+    let visKM: Double?
+    let visMiles: Double?
     let gustMph: Double?
     let gustKph: Double?
-    let uv: Int?
+    let uv: Double?
 
     enum CodingKeys: String, CodingKey {
         case timeEpoch = "time_epoch"

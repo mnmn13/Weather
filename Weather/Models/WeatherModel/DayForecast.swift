@@ -19,7 +19,7 @@ struct DayForecast: Codable {
     let maxwindKph: Double?
     let totalprecipMm: Double?
     let totalprecipIn: Double?
-    let totalsnowCM: Int?
+    let totalsnowCM: Double?
     let avgvisKM: Double?
     let avgvisMiles: Int?
     let avghumidity: Int?
