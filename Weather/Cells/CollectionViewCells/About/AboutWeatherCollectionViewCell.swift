@@ -64,17 +64,17 @@ class AboutWeatherCollectionViewCell: UICollectionViewCell {
             case 1:
                 return String(astroModel.sunset ?? "")
             case 2:
-                return String(format: "%g", model.windKph ?? 0) + " km/h"
+                return String(format: "%.0f", model.windKph ?? 0) + " km/h"
             case 3:
-                return String(format: "%g", model.pressureMB ?? 0) + "mm"
+                return String(format: "%.0f", model.pressureMB ?? 0) + " mm"
             case 4:
-                return String(format: "%g", model.feelslikeC ?? 0) + "°"
+                return String(format: "%.0f", model.feelslikeC ?? 0) + "°"
             case 5:
                 return String(model.humidity ?? 0) + "%"
             case 6:
-                return String(format: "%g", model.visKM ?? 0) + "km"
+                return String(format: "%.0f", model.visKM ?? 0) + " km"
             case 7:
-                return String(format: "%g", model.pressureIn ?? 0)
+                return String(format: "%.0f", model.pressureIn ?? 0)
             default:
                 return ""
             }

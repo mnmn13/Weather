@@ -20,9 +20,26 @@ class CollectionViewCell: UICollectionViewCell {
     private var model: Weather?
     private var hour: HourForecast?
     
-    private var hours: [HourForecast] {
-        return model?.forecast?.forecastday?[0].hour ?? []
-    }
+    private lazy var hours: [HourForecast] = {
+        guard let currentDayHours = model?.forecast?.forecastday?.first?.hour,
+             let nextDayHours = model?.forecast?.forecastday?[1].hour else { return [] }
+        
+        let currentHour = Calendar.current.component(.hour, from: Date())
+        
+        let hoursAfterCurrentHour = currentDayHours.filter { hourForecast in
+            guard let date = hourForecast.getDate() else { return false }
+            let hour = Calendar.current.component(.hour, from: date)
+            return hour >= currentHour
+        }
+        
+        let hoursBeforeNextDayCurrentHour = nextDayHours.filter { hourforecast in
+            guard let date = hourforecast.getDate() else { return false }
+            let hour = Calendar.current.component(.hour, from: date)
+            return hour < currentHour
+        }
+        
+        return hoursAfterCurrentHour + hoursBeforeNextDayCurrentHour
+    }()
     
     private var days: [DayForecastGroup] {
         return model?.forecast?.forecastday ?? []
@@ -59,7 +76,7 @@ class CollectionViewCell: UICollectionViewCell {
         self.degreeLabel.text = String(format: "%.0f", model.current?.tempC ?? 0) + "°"
         self.weatherDescriptionLabel.text = "\(model.current?.condition?.text ?? "")"
 
-        self.maxMinTempLabel.text = "H: \(String(format: "%.0f", model.forecast?.forecastday?[0].day?.maxtempC ?? 0))° L:\(String(format: "%.0f", model.forecast?.forecastday?[0].day?.mintempC ?? 0))°"
+        self.maxMinTempLabel.text = "H: \(String(format: "%.0f", model.forecast?.forecastday?[0].day?.maxtempC ?? 0))° L: \(String(format: "%.0f", model.forecast?.forecastday?[0].day?.mintempC ?? 0))°"
     }
     
     //MARK: - UICollectionViewCompositionalLayout
@@ -123,11 +140,11 @@ class CollectionViewCell: UICollectionViewCell {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(180)))
         let hGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: item.layoutSize.heightDimension), repeatingSubitem: item, count: 2)
         hGroup.interItemSpacing = .fixed(10)
-        
-        let vGroup = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(4 * 126)), subitems: [hGroup])
-        vGroup.interItemSpacing = .fixed(10)
+
+        let vGroup = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(720)), subitems: [hGroup])
 
         let section = NSCollectionLayoutSection(group: vGroup)
+        section.interGroupSpacing = 10
 //        section.interGroupSpacing = 10
 //        section.decorationItems = [NSCollectionLayoutDecorationItem.background(elementKind: CellBackgroundViews.identifier)]
         return section

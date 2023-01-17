@@ -31,8 +31,12 @@ class NetworkManager {
         baseRequest(urlString: "https://api.weatherapi.com/v1/forecast.json?key=\(accessKey)&q=\(lat),\(lon)&days=3&aqi=yes&alerts=no", completion: completion)
     }
     
+    func request<T: Decodable>(searchLocation: String, completion: @escaping (Result<T, Error>) -> Void) {
+        baseRequest(urlString: "https://api.weatherapi.com/v1/search.json?key=\(accessKey)&q=\(searchLocation)", completion: completion)
+    }
+    
     func request<T: Decodable>(search: String, completion: @escaping (Result<T, Error>) -> Void) {
-        baseRequest(urlString: "https://api.weatherapi.com/v1/forecast.json?key=\(accessKey)&q=\(search)&days=10&aqi=yes&alerts=no", completion: completion)
+        baseRequest(urlString: "https://api.weatherapi.com/v1/forecast.json?key=\(accessKey)&q=\(search)&days=3&aqi=yes&alerts=no", completion: completion)
     }
     
     private func baseRequest<T: Decodable>(urlString: String, completion: @escaping (Result<T, Error>) -> Void) {
@@ -49,7 +53,8 @@ class NetworkManager {
             guard let data = data else { return }
             do {
                let json = try JSONDecoder().decode(T.self, from: data)
-                print("NetworkManager | JSONDecoer success \(json)")
+//                print("NetworkManager | JSONDecoer success \(json)")
+                print("NetworkManager | JSONDecoer success ")
                 completion(.success(json))
                 return
                 
@@ -60,28 +65,6 @@ class NetworkManager {
             }
         }).resume()
     }
-    
-    //    static func decode() {
-    //        DispatchQueue.main.async {
-    //            let request = request(for: .todayDate) { data?, error? in
-    //
-    //            }
-    //
-    //            let json: Weather?
-    //            do {
-    //                json = try JSONDecoder().decode(Weather.self, from: data)
-    //                print("Decoder ")
-    //            }
-    //            catch {
-    //                print("Decoder error - \(error)")
-    //            }
-    //
-    //            guard let result = json else {
-    //                return print("Decoder error: - result is nil")
-    //            }
-    //            goData = result
-    //        }
-    //    }
 }
 extension NetworkManager {
     enum RequestType: String {

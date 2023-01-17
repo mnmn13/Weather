@@ -16,7 +16,7 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Today" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DXK-EB-WrD">
-                        <rect key="frame" x="20" y="15" width="133" height="71"/>
+                        <rect key="frame" x="20" y="15" width="143" height="71"/>
                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
@@ -28,13 +28,13 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cLs-aS-nAa">
-                        <rect key="frame" x="324" y="15" width="52" height="71"/>
+                        <rect key="frame" x="334" y="15" width="52" height="71"/>
                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YFS-b0-sSe">
-                        <rect key="frame" x="203" y="15" width="71" height="71"/>
+                        <rect key="frame" x="213" y="15" width="71" height="71"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="YFS-b0-sSe" secondAttribute="height" multiplier="1:1" id="42h-L9-v6B"/>
                         </constraints>
@@ -51,7 +51,7 @@
                 <constraint firstAttribute="bottom" secondItem="DXK-EB-WrD" secondAttribute="bottom" constant="15" id="cBW-Ak-J1U"/>
                 <constraint firstAttribute="bottom" secondItem="InV-EP-fSQ" secondAttribute="bottom" id="heJ-zL-vj2"/>
                 <constraint firstItem="cLs-aS-nAa" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="15" id="lpR-gU-CHr"/>
-                <constraint firstItem="InV-EP-fSQ" firstAttribute="leading" secondItem="cLs-aS-nAa" secondAttribute="trailing" constant="100" id="pW9-mK-fqm"/>
+                <constraint firstItem="InV-EP-fSQ" firstAttribute="leading" secondItem="cLs-aS-nAa" secondAttribute="trailing" constant="90" id="pW9-mK-fqm"/>
                 <constraint firstItem="YFS-b0-sSe" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="15" id="paM-Um-i1l"/>
                 <constraint firstItem="YFS-b0-sSe" firstAttribute="leading" secondItem="DXK-EB-WrD" secondAttribute="trailing" constant="50" id="qEn-II-20D"/>
                 <constraint firstAttribute="bottom" secondItem="cLs-aS-nAa" secondAttribute="bottom" constant="15" id="vLi-E1-8Pc"/>
