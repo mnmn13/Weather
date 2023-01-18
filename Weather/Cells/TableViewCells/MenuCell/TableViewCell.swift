@@ -21,15 +21,10 @@ class TableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-    }
-    
-    private func registerCell() {
-        
     }
     
     func configure(with weatherModel: Weather) {
@@ -44,7 +39,5 @@ class TableViewCell: UITableViewCell {
         highLowLabel.textColor = .white
         uiView.backgroundColor = .darkGray
         uiView.layer.cornerRadius = 15
-        
     }
-    
 }

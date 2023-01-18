@@ -13,8 +13,6 @@ class MainViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var toolBar: UIToolbar!
-    //    private let collectionView = UICollectionView (frame: .zero, collectionViewLayout: MainViewController.createLayout())
-    //    private var toolBar: UIToolbar!
     private var pageControl: UIPageControl!
     
     let locationManager = CLLocationManager()
@@ -23,26 +21,20 @@ class MainViewController: UIViewController {
     
     var locations = [Location]()
     var weatherModels = [Weather]()
-    var locationsCoreData: [Search] = []
-    var secondSearchLocation = [Location]()
+    
     weak var menuVC: MenuViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .darkGray  //UIColor(named: "background")
+        self.view.backgroundColor = .darkGray
         setUpCollectionView()
         registerCollectionViewCells()
         setupToolBar()
-        setupPageControl()
-//        setupLocation()
-//        fetchLocations()
-        navigationController?.navigationBar.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupLocation()
-//        fetchLocations()
         navigationController?.navigationBar.isHidden = true
     }
     
@@ -50,12 +42,12 @@ class MainViewController: UIViewController {
         super.viewWillDisappear(animated)
         navigationController?.navigationBar.isHidden = false
     }
-    
+    //MARK: - Request for location from CoreData
     private func fetchLocations() {
-        locations = CoreDataManager.getAllLocations()
-        if locations.isEmpty {
+        locations = CoreDataManager.getLocations()
+        if locations.isEmpty, weatherModels.isEmpty {
+            listButtonTapped()
             print("CoreData locations is empty")
-            
         } else {
             for location in locations {
                 
@@ -75,14 +67,7 @@ class MainViewController: UIViewController {
             }
         }
     }
-    
-    func updateCV() {
-            
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
-    }
-    
+    //MARK: - Creating UICollectionViewCompositionalLayout
     private func createLayout() -> UICollectionViewCompositionalLayout {
         
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)))
@@ -94,13 +79,13 @@ class MainViewController: UIViewController {
         
         return UICollectionViewCompositionalLayout(section: section)
     }
-    //MARK: - CollectionView Settings
+    //MARK: - Location Settings
     private func setupLocation() {
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
     }
-    
+    //MARK: - CollectionView Settings
     private func setUpCollectionView() {
         collectionView.collectionViewLayout = createLayout()
         collectionView.backgroundColor = .clear
@@ -108,39 +93,20 @@ class MainViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.alwaysBounceVertical = false
-        //        view.addSubview(collectionView)
-        //        NSLayoutConstraint.activate([collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-        //                                 collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-        //                                 collectionView.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor),
-        //                                 collectionView.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor)])
     }
-    
+    // Register collectionView cells
     private func registerCollectionViewCells() {
         collectionView.register(.init(nibName: CollectionViewCell.identifier, bundle: .main), forCellWithReuseIdentifier: CollectionViewCell.identifier)
     }
-    // MARK: - PageContol
-    private func setupPageControl() {
-        pageControl = UIPageControl(frame: CGRect(origin: .zero, size: CGSize(width: view.frame.width / 2, height: 1)))
-        //        view.addSubview(pageControl)
-        pageControl.addTarget(self, action: #selector(PCTapped), for: .valueChanged)
-        pageControl.hidesForSinglePage = true
-        
-    }
-    @objc func PCTapped(_ sender: UIPageControl) {
-        collectionView.scrollToItem(at: IndexPath(row: sender.currentPage, section: 0), at: .centeredHorizontally, animated: true)
-    }
-    
     //MARK: - ToolBar
     private func setupToolBar() {
-        //        toolBar.backgroundColor = #colorLiteral(red: 0.4629999995, green: 0.4629999995, blue: 0.5019999743, alpha: 0.4)
         
         let items: [UIBarButtonItem] = [
             UIBarButtonItem(image: UIImage(systemName: "map"), style: .plain, target: self, action: #selector(mapButtonTapped)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
-            //            UIBarButtonItem(customView: pageControl),
+            //            Page control - coming soon
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
-            UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(listButtonTapped))
-        ]
+            UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(listButtonTapped))]
         toolBar.items = items
         
         let appearence = UIToolbarAppearance()
@@ -149,6 +115,7 @@ class MainViewController: UIViewController {
         toolBar.standardAppearance = appearence
         
     }
+    //MARK: - Action buttons
     @objc func mapButtonTapped(_ sender: Any) {
         
         let alertController = UIAlertController(title: "Ooops..", message: "Maybe it will be available in the next version.", preferredStyle: .alert)
@@ -159,15 +126,13 @@ class MainViewController: UIViewController {
     }
     @objc func listButtonTapped() {
         let storyboard = UIStoryboard(name: "Menu", bundle: nil)
-        //        let vc = storyboard.instantiateViewController(withIdentifier: "menu")
         let vc = storyboard.instantiateViewController(withIdentifier: "menu") as! MenuViewController
         vc.mainVC = self
-        
         vc.configure(with: weatherModels)
         navigationController?.pushViewController(vc, animated: true)
     }
 }
-//MARK: - CLLocationManagerDelegate
+//MARK: - CLLocationManagerDelegate + Request
 extension MainViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if !locations.isEmpty, currentLocation == .none {
@@ -179,8 +144,7 @@ extension MainViewController: CLLocationManagerDelegate {
                     print(locations)
                     DispatchQueue.main.async {
                         self?.collectionView.reloadData()
-                        self?.pageControl.numberOfPages = self?.weatherModels.count ?? 0
-                        self?.fetchLocations()
+                        self?.fetchLocations() // func to load lodations from CoreData
                     }
                 case .failure(let error):
                     print(error)
@@ -208,20 +172,7 @@ extension MainViewController: UICollectionViewDataSource {
         return cell
     }
 }
-
+// MARK: - UICollectionViewDelegate
 extension MainViewController: UICollectionViewDelegate {
     
 }
-
-//extension MainViewController: UICollectionViewDelegateFlowLayout {
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//
-//        let index = Int(round(scrollView.contentOffset.x / (scrollView.frame.width)))
-//        pageControl.currentPage = index
-//        let weatherModel = weatherModels[index]
-//        UIView.animate(withDuration: 0.5) {
-//
-//        }
-//    }
-//}
-

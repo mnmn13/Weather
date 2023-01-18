@@ -29,7 +29,7 @@ struct DayForecast: Codable {
     let dailyChanceOfSnow: Int?
     let condition: Condition?
     let uv: Int?
-
+    
     enum CodingKeys: String, CodingKey {
         case maxtempC = "maxtemp_c"
         case maxtempF = "maxtemp_f"

@@ -49,52 +49,44 @@ class MenuViewController: UIViewController {
     }
     
     @objc func action() {
-        
         let storyboard = UIStoryboard(name: "Preview", bundle: .none)
         guard let vc = storyboard.instantiateViewController(withIdentifier: "preview") as? PreviewViewController else { return }
         let model = "123"
         vc.menuVC = self
         vc.configure(with: model, locationSearchModel: locationSearchModel)
-        
         self.present(vc, animated: true, completion: nil)
-        
     }
-    
+    // TableView setup
     private func setupTV() {
-        
         tableView = UITableView(frame: view.bounds)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .black
         tableView.separatorStyle = .none
         view.addSubview(tableView)
-        //        NSLayoutConstraint.activate([
-        //            tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-        //            tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
-        //            tableView.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor),
-        //            tableView.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor)])
     }
     func reloadTV() {
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
     }
-    
+    // Register tableView cells
     private func registerCell() {
         tableView.register(UINib(nibName: TableViewCell.identifier, bundle: .main), forCellReuseIdentifier: TableViewCell.identifier)
         tableView.register(UINib(nibName: SearchTableViewCell.identifier, bundle: .main), forCellReuseIdentifier: SearchTableViewCell.identifier)
-        
     }
-    
+    //  Func to transfer data from menuVC
     func configure(with weatherModels: [Weather]) {
         self.weatherModels = weatherModels
     }
-    //    MARK: - SearchController setup func
+    //    MARK: - SearchController setup func + Navigation controller
     private func setupSearchController() {
         
         navigationItem.searchController = searchController
         searchController.searchBar.delegate = self
-        
+        searchController.searchBar.searchTextField.defaultTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        searchController.searchBar.searchTextField.attributedPlaceholder = NSAttributedString.init(string: "Search", attributes: [NSAttributedString.Key.foregroundColor:UIColor.white])
+        searchController.searchBar.searchTextField.leftView?.tintColor = .white
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithOpaqueBackground()
         navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
@@ -102,9 +94,7 @@ class MenuViewController: UIViewController {
         navBarAppearance.backgroundColor = .black
         navigationController?.navigationBar.standardAppearance = navBarAppearance
         navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-        
         navigationController?.navigationBar.prefersLargeTitles = true
-        //        searchController.obscuresBackgroundDuringPresentation = false
     }
     
     
@@ -113,13 +103,6 @@ class MenuViewController: UIViewController {
 extension MenuViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
-    }
-    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-        //        notes.swapAt(fromIndexPath.row, to.row)
-        //        CoreDataManager.
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 15
@@ -141,18 +124,6 @@ extension MenuViewController: UITableViewDelegate {
         let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
         return configuration
     }
-    //    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    //
-    //        mainVC.locations = self.weatherModels.compactMap { $0.location }
-    //        mainVC.weatherModels = self.weatherModels
-    ////        mainVC.pagecontrol.currentPage = indexPath.row
-    //
-    //        let weatherModel = mainVC.weatherModels[indexPath.row]
-    
-    
-    //        navigationController?.customPop()
-    //    }
-    
 }
 //MARK: - UITableViewDataSource
 extension MenuViewController: UITableViewDataSource {
@@ -195,15 +166,15 @@ extension MenuViewController: UITableViewDataSource {
             guard let model = locationSearchModel[indexPath.item].name else { return }
             vc.menuVC = self
             vc.configure(with: model, locationSearchModel: locationSearchModel)
-            
             self.present(vc, animated: true, completion: nil)
         } else {
-            navigationController?.popViewController(animated: true)
-            mainVC.weatherModels = self.weatherModels
             DispatchQueue.main.async {
+                self.mainVC.weatherModels = self.weatherModels
+                self.navigationController?.popViewController(animated: true)
                 self.mainVC.collectionView.reloadData()
+                self.mainVC.collectionView.scrollToItem(at: IndexPath(row: indexPath.row, section: 0), at: .centeredHorizontally, animated: false)
             }
-            mainVC.collectionView.scrollToItem(at: IndexPath(row: indexPath.row, section: 0), at: .centeredHorizontally, animated: false)
+            
         }
     }
 }

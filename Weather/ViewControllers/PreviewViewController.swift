@@ -10,12 +10,9 @@ import UIKit
 
 class PreviewViewController: UIViewController {
     
-    
     @IBOutlet weak var navItem: UINavigationItem!
     @IBOutlet weak var navigationBar: UINavigationBar!
     @IBOutlet weak var collectionView: UICollectionView!
-    //    private var collectionView: UICollectionView!
-    //    @IBOutlet weak var navigationItem: UINavigationBar!
     
     weak var menuVC: MenuViewController!
     weak var mainVC: MainViewController?
@@ -29,7 +26,7 @@ class PreviewViewController: UIViewController {
         registerCell()
         request()
         setUpCollectionView()
-        setupNav()
+        setupNavigation()
         self.view.backgroundColor = .darkGray
     }
     
@@ -38,7 +35,7 @@ class PreviewViewController: UIViewController {
         self.locationSearchModel = locationSearchModel
     }
     
-    private func setupNav() {
+    private func setupNavigation() {
         
         self.navigationBar.tintColor = .clear
         
@@ -50,15 +47,14 @@ class PreviewViewController: UIViewController {
         self.navItem.leftBarButtonItem = cancellButton
         self.navItem.rightBarButtonItem = addButton
     }
-    
+    //MARK: -  Action buttons
     @objc private func cancelTapped() {
         self.dismiss(animated: true)
     }
     
     @objc private func addTapped() {
-        
         guard let location = locationSearchModel.first else { return }
-        
+        // Save to core data
         CoreDataManager.saveLocation(location)
         guard let weather = weatherModel.first else { return }
         menuVC.weatherModels.append(weather)
@@ -67,10 +63,9 @@ class PreviewViewController: UIViewController {
         menuVC.searchText.removeAll()
         menuVC.searchController.searchBar.searchTextField.text?.removeAll()
         menuVC?.searchController.searchBar.searchTextField.resignFirstResponder()
-        
         self.dismiss(animated: true)
     }
-    
+    //MARK: - Request
     private func request() {
         
         NetworkManager.shared.request(search: locationToRequest) { (result: Result<Weather, Error>) in
@@ -99,13 +94,8 @@ class PreviewViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.alwaysBounceVertical = false
-        //        view.addSubview(collectionView)
-        //        NSLayoutConstraint.activate([collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-        //                                     collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-        //                                     collectionView.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor),
-        //                                     collectionView.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor)])
     }
-    
+    //MARK: - Create UICollectionViewCompositionalLayout
     private func createLayout() -> UICollectionViewCompositionalLayout {
         
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)))
@@ -113,12 +103,11 @@ class PreviewViewController: UIViewController {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)), subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
-        //        section.orthogonalScrollingBehavior = .paging
         
         return UICollectionViewCompositionalLayout(section: section)
     }
 }
-
+//MARK: - UICollectionViewDataSource
 extension PreviewViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return weatherModel.count
@@ -132,7 +121,7 @@ extension PreviewViewController: UICollectionViewDataSource {
         return cell
     }
 }
-
+//MARK: - UICollectionViewDelegate
 extension PreviewViewController: UICollectionViewDelegate {
     
 }

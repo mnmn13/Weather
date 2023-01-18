@@ -15,7 +15,7 @@ struct AstroForecast: Codable {
     let moonset: String?
     let moonPhase: String?
     let moonIllumination: String?
-
+    
     enum CodingKeys: String, CodingKey {
         case sunrise = "sunrise"
         case sunset = "sunset"

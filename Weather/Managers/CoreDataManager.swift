@@ -12,23 +12,22 @@ import CoreData
 class CoreDataManager {
     
     private static var persistentContainer: NSPersistentContainer = {
-
+        
         let container = NSPersistentContainer(name: "Weather")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
-
+                
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
         return container
     }()
-
     private static var context: NSManagedObjectContext {
         return persistentContainer.viewContext
     }
-
+    
     // MARK: - Core Data Saving support
-
+    
     static func saveContext () {
         if context.hasChanges {
             do {
@@ -42,11 +41,10 @@ class CoreDataManager {
 }
 
 extension CoreDataManager {
-    
-    static func getAllLocations() -> [Location] {
-
-        let request = LocationCoreData.fetchRequest()
+    // Get locations from CoreData
+    static func getLocations() -> [Location] {
         
+        let request = LocationCoreData.fetchRequest()
         do {
             let locations = try context.fetch(request)
             return Location.fetchFromCoreDataLocations(locations)
@@ -55,12 +53,10 @@ extension CoreDataManager {
             return [Location]()
         }
     }
+    // Delete location
     static func deleteLocation(_ location: Location) {
-  
         let request = LocationCoreData.fetchRequest()
-        
         do {
-            
             let locations = try context.fetch(request)
             let neededLocation = locations.first { loc in
                 return loc.lat == location.lat &&
@@ -69,7 +65,6 @@ extension CoreDataManager {
                 loc.region == location.region &&
                 loc.country == location.country
             }
-
             if let neededLocation = neededLocation {
                 context.delete(neededLocation)
                 
@@ -80,7 +75,7 @@ extension CoreDataManager {
             print(error.localizedDescription)
         }
     }
-    
+    // Helpers
     static func delete(location: LocationCoreData) {
         context.delete(location)
         saveContext()
@@ -92,12 +87,10 @@ extension CoreDataManager {
             CoreDataManager.saveContext()
         }
     }
- 
+    
     static func saveLocation(_ location: Location) {
         let _ = location.toCoreData(with: context)
- 
         CoreDataManager.saveContext()
     }
-    
 }
 
