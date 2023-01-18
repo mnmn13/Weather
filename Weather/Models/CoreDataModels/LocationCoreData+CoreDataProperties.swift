@@ -21,7 +21,6 @@ extension LocationCoreData {
     @NSManaged public var lat: Double
     @NSManaged public var long: Double
     @NSManaged public var region: String?
-
 }
 
 extension LocationCoreData : Identifiable {

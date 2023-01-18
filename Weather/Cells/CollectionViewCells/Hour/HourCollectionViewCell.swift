@@ -20,7 +20,6 @@ class HourCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
     
     func configure(with model: HourForecast) {
@@ -38,19 +37,15 @@ class HourCollectionViewCell: UICollectionViewCell {
         } else {
             hourLabel.text = model.time
         }
-        
         if let temp = model.tempC {
             hourDegreeLabel.text = String(Int(temp)) + "°"
         } else {
             hourDegreeLabel.text = model.condition?.text
         }
-        
         model.condition?.getImage(handler: { [weak self] image in
             DispatchQueue.main.async {
                 self?.imageView.image = image
             }
         })
-        
-    }
-    
+    }    
 }

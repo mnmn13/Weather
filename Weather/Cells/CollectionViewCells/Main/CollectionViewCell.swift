@@ -5,6 +5,7 @@
 //  Created by MN on 27.12.2022.
 //  Copyright © 2022 Nikita Moshyn. All rights reserved.
 //
+// The cell in which all the elements are located are connected, for the convenience of reusing the code
 
 import UIKit
 
@@ -20,9 +21,10 @@ class CollectionViewCell: UICollectionViewCell {
     private var model: Weather?
     private var hour: HourForecast?
     
+    //MARK: - Calculation of the number of days for the correct display of hours in HourCollectionViewCell
     private lazy var hours: [HourForecast] = {
         guard let currentDayHours = model?.forecast?.forecastday?.first?.hour,
-             let nextDayHours = model?.forecast?.forecastday?[1].hour else { return [] }
+              let nextDayHours = model?.forecast?.forecastday?[1].hour else { return [] }
         
         let currentHour = Calendar.current.component(.hour, from: Date())
         
@@ -45,14 +47,11 @@ class CollectionViewCell: UICollectionViewCell {
         return model?.forecast?.forecastday ?? []
     }
     
-    
-    //    private var sections = [Sections]()
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         configureCollectionView()
     }
-    
+    //MARK: - CollectionView setup settings
     func configureCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -63,7 +62,7 @@ class CollectionViewCell: UICollectionViewCell {
         //        collectionView = UICollectionView( frame: CGRect(x: 0, y: 0, width: 0, height: 0), collectionViewLayout: createLayout())
         registerCells()
     }
-    
+    //Register CollectionViewCells
     func registerCells() {
         collectionView.register(.init(nibName: HourCollectionViewCell.identifier, bundle: .main), forCellWithReuseIdentifier: HourCollectionViewCell.identifier)
         collectionView.register(.init(nibName: DayCollectionViewCell.identifier, bundle: .main), forCellWithReuseIdentifier: DayCollectionViewCell.identifier)
@@ -75,7 +74,7 @@ class CollectionViewCell: UICollectionViewCell {
         self.cityNameLabel.text = "\(model.location?.name ?? "")"
         self.degreeLabel.text = String(format: "%.0f", model.current?.tempC ?? 0) + "°"
         self.weatherDescriptionLabel.text = "\(model.current?.condition?.text ?? "")"
-
+        
         self.maxMinTempLabel.text = "H: \(String(format: "%.0f", model.forecast?.forecastday?[0].day?.maxtempC ?? 0))° L: \(String(format: "%.0f", model.forecast?.forecastday?[0].day?.mintempC ?? 0))°"
     }
     
@@ -95,18 +94,6 @@ class CollectionViewCell: UICollectionViewCell {
             }}, configuration: config)
         layout.register(CellBackgroundViews.self, forDecorationViewOfKind: CellBackgroundViews.identifier)
         return layout
-        
-        
-        
-//        return .init { [weak self] section, enviroment in
-//            guard let self = self else { return nil }
-//            switch section {
-//            case 0: return self.createHourLayout()
-//            case 1: return self.createDayListSection()
-//            case 2: return self.createAboutWeatherGridSection()
-//            default: return nil
-//            }
-//        }
     }
     
     //MARK: - NSCollectionLayoutSection
@@ -121,7 +108,6 @@ class CollectionViewCell: UICollectionViewCell {
         section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
         section.decorationItems = [NSCollectionLayoutDecorationItem.background(elementKind: CellBackgroundViews.identifier)]
         
-        // Return
         return section
     }
     
@@ -136,37 +122,17 @@ class CollectionViewCell: UICollectionViewCell {
     }
     
     private func createAboutWeatherGridSection() -> NSCollectionLayoutSection {
-
+        
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(180)))
         let hGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: item.layoutSize.heightDimension), repeatingSubitem: item, count: 2)
         hGroup.interItemSpacing = .fixed(10)
-
+        
         let vGroup = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(720)), subitems: [hGroup])
-
+        
         let section = NSCollectionLayoutSection(group: vGroup)
         section.interGroupSpacing = 10
-//        section.interGroupSpacing = 10
-//        section.decorationItems = [NSCollectionLayoutDecorationItem.background(elementKind: CellBackgroundViews.identifier)]
         return section
     }
-    
-//    private func createAboutWeatherGridSection() -> NSCollectionLayoutSection {
-//        // section -> groups -> items -> size
-//        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5),
-//                                              heightDimension: .fractionalHeight(1.0))
-//        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-//        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-//                                               heightDimension: .fractionalWidth(0.5))
-//        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 2)
-//        let spacing = CGFloat(20)
-//        group.interItemSpacing = .fixed(spacing)
-//        let section = NSCollectionLayoutSection(group: group)
-//        section.interGroupSpacing = spacing
-//        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: spacing, bottom: 0, trailing: spacing)
-//        section.decorationItems = [NSCollectionLayoutDecorationItem.background(elementKind: CellBackgroundViews.identifier)]
-//        let layout = UICollectionViewCompositionalLayout(section: section)
-//        return section
-//    }
 }
 
 // MARK: - CollectionViewDataSource
@@ -215,13 +181,7 @@ extension CollectionViewCell: UICollectionViewDataSource {
         }
     }
 }
-
+//MARK: - UICollectionViewDelegate
 extension CollectionViewCell: UICollectionViewDelegate {
     
 }
-
-//enum Sections {
-//    case hour(items: [HourForecast])
-//    case day
-//    case about
-//}

@@ -9,30 +9,28 @@
 import UIKit
 
 class AboutWeatherCollectionViewCell: UICollectionViewCell {
-        
+    
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var contentLabel: UILabel!
     @IBOutlet weak var additionalContentLabel: UILabel!
     
     static let identifier = "AboutWeatherCollectionViewCell"
-    
+    // Not used
     let icons = ["UV" : UIImage(systemName: "sun.max.fill"),
-                "Sunset" : UIImage(systemName: "sunset.fill"),
-                "Wind" : UIImage(systemName: "wind"),
-                "Rainfall" : UIImage(systemName: "drop.fill"),
-                "FeelsLike" : UIImage(systemName: "thermometer"),
-                "Humidity" : UIImage(systemName: "humidity"),
-                "Visibility" : UIImage(systemName: "eye.fill"),
-                "Pressure" : UIImage(systemName: "gauge")]
+                 "Sunset" : UIImage(systemName: "sunset.fill"),
+                 "Wind" : UIImage(systemName: "wind"),
+                 "Rainfall" : UIImage(systemName: "drop.fill"),
+                 "FeelsLike" : UIImage(systemName: "thermometer"),
+                 "Humidity" : UIImage(systemName: "humidity"),
+                 "Visibility" : UIImage(systemName: "eye.fill"),
+                 "Pressure" : UIImage(systemName: "gauge")]
     
     override func awakeFromNib() {
         super.awakeFromNib()
     }
     
     func configure(with model: Current,and astroModel: AstroForecast, and numberItems: Int, and hour: HourForecast) {
-        
-        
         
         titleLabel.text = {
             switch numberItems {
@@ -79,7 +77,7 @@ class AboutWeatherCollectionViewCell: UICollectionViewCell {
                 return ""
             }
         }()
-    
+        
         iconImageView.image = {
             switch numberItems {
             case 0:
@@ -113,13 +111,13 @@ class AboutWeatherCollectionViewCell: UICollectionViewCell {
                 } else if uv >= 6 {
                     return "High"
                 } else if uv >= 8 {
-                   return "Very high"
+                    return "Very high"
                 } else if uv >= 11 {
                     return "Extreme"
                 } else {
                     return "No data available"
                 }
-
+                
             case 1:
                 return "Sunset: \(astroModel.sunset ?? "")"
             case 2:

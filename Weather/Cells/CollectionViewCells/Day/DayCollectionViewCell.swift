@@ -9,7 +9,7 @@
 import UIKit
 
 class DayCollectionViewCell: UICollectionViewCell {
-     
+    
     @IBOutlet weak var dayLabel: UILabel!
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var lowTempLabel: UILabel!

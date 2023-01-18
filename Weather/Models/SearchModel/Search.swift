@@ -5,6 +5,7 @@
 //  Created by MN on 12.01.2023.
 //  Copyright © 2023 Nikita Moshyn. All rights reserved.
 //
+// The real-time location request requires a different model, but the model currently uses is "Location"
 
 import Foundation
 

@@ -43,7 +43,7 @@ struct HourForecast: Codable {
     let gustMph: Double?
     let gustKph: Double?
     let uv: Double?
-
+    
     enum CodingKeys: String, CodingKey {
         case timeEpoch = "time_epoch"
         case time = "time"
@@ -81,7 +81,7 @@ struct HourForecast: Codable {
     }
     
     func getDate() -> Date? {
-
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
         
@@ -97,9 +97,3 @@ struct HourForecast: Codable {
         time = "Now"
     }
 }
-
-//enum WindDir: String, Codable {
-//    case e = "E"
-//    case ene = "ENE"
-//}
-

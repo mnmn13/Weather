@@ -20,13 +20,13 @@ class CellBackgroundViews: UICollectionReusableView {
         view.clipsToBounds = true
         return view
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         backgroundColor = .clear
         addSubview(insetView)
-
+        
         NSLayoutConstraint.activate([
             insetView.leadingAnchor.constraint(equalTo: leadingAnchor),
             insetView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -34,7 +34,7 @@ class CellBackgroundViews: UICollectionReusableView {
             insetView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -14,7 +14,7 @@ struct DayForecastGroup: Codable {
     let day: DayForecast?
     let astro: AstroForecast?
     let hour: [HourForecast]?
-
+    
     enum CodingKeys: String, CodingKey {
         case date = "date"
         case dateEpoch = "date_epoch"
@@ -25,7 +25,7 @@ struct DayForecastGroup: Codable {
     func getDate() -> Date? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-//        dateFormatter.dateFormat = "dd-MM-yyyy"
+        //        dateFormatter.dateFormat = "dd-MM-yyyy"
         guard let dateString = date else { return nil }
         let date = dateFormatter.date(from: dateString)
         return date
@@ -44,5 +44,4 @@ extension Date {
     var hour: Int {
         return Calendar.current.component(.hour, from: self)
     }
-    
 }
